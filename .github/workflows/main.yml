@@ -1,0 +1,51 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Set node
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Setup
+        run: npm i -D
+
+      - name: Build
+        run: npm run build
+
+
+      # - name: Install
+      #   run: nci
+
+      # - name: Lint
+      #   run: nr style
+
+      # - name: Build
+      #   run: nr build
+
+      # - name: zip bundle file
+      #   run: zip -r ai-group-tabs.zip dist/
+
+      - name: Upload package
+        uses: actions/upload-artifact@v3
+        with:
+          name: build/
+          path: build/
+          retention-days: 5
