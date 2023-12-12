@@ -16,8 +16,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      # - name: Install pnpm
-      #   uses: pnpm/action-setup@v2
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
 
       - name: Set node
         uses: actions/setup-node@v3
@@ -25,27 +25,23 @@ jobs:
           node-version: lts/*
 
       - name: Setup
-        run: npm i -D
+        run: npm i -g @antfu/ni
+
+      - name: Install
+        run: nci
+
+      - name: Lint
+        run: nr style
 
       - name: Build
-        run: npm run build
+        run: nr build
 
-
-      # - name: Install
-      #   run: nci
-
-      # - name: Lint
-      #   run: nr style
-
-      # - name: Build
-      #   run: nr build
-
-      # - name: zip bundle file
-      #   run: zip -r ai-group-tabs.zip dist/
+      - name: zip bundle file
+        run: zip -r ai-group-tabs.zip dist/
 
       - name: Upload package
         uses: actions/upload-artifact@v3
         with:
-          name: build/
-          path: build/
+          name: ai-group-tabs
+          path: ai-group-tabs.zip
           retention-days: 5
